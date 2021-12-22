@@ -15,9 +15,7 @@ function colorRender(val, size){
     var red = Math.floor(darker[0] + val*(lighter[0]-darker[0])/(size*size));
     var green = Math.floor(darker[1] + val*(lighter[1]-darker[1])/(size*size));
     var blue = Math.floor(darker[2] + val*(lighter[2]-darker[2])/(size*size));
-    console.log(red);
-    var result = "#" + red.toString(16) + green.toString(16) + blue.toString(16);
-    console.log(result);   
+    var result = "#" + red.toString(16) + green.toString(16) + blue.toString(16); 
     return result;
 }
 export default class Line extends React.Component{
