@@ -40,10 +40,13 @@ export default class Grid extends React.Component{
 
     minus(){
         var newSize = this.state.gridModelState.size-1;
+        console.log("minus");
         this.setState({gridModelState:gridController.add(new GridModel(newSize))})
+        
     }
     plus(){
-        var newSize = this.state.gridModelState.size-1;
+        var newSize = this.state.gridModelState.size+1;
+        console.log("plus");
         this.setState({gridModelState:gridController.add(new GridModel(newSize))})
     }
     render(){
@@ -57,12 +60,12 @@ export default class Grid extends React.Component{
             
             >
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.button} onPress={this.minus()}>
+                    <TouchableOpacity style={styles.button} onPress={()=>this.minus()}>
                     <Text style={styles.textSign}>{"-"}</Text>
                     </TouchableOpacity>
                     
                     <Text style={styles.textGridSize}>{this.state.gridModelState.size}</Text>
-                    <TouchableOpacity style={styles.button} onPress={this.plus}>
+                    <TouchableOpacity style={styles.button} onPress={()=>this.plus()}>
                     <Text style={styles.textSign}>{"+"}</Text>
                     </TouchableOpacity>
                     
@@ -101,7 +104,6 @@ const styles = StyleSheet.create({
     buttonContainer:{
         flex:1,
         justifyContent:"center",
-        backgroundColor:"red",
         flexDirection:"row",
         maxHeight:50,
         marginBottom:50
