@@ -23,21 +23,29 @@ export default class Grid extends React.Component{
         };
         
     }
-    static moveRight(){
+    moveRight(){
         this.setState({gridModelState:gridController.move(this.state.gridModelState,"right")})
     }
-    static moveLeft(){
+    moveLeft(){
         this.setState({gridModelState:gridController.move(this.state.gridModelState,"left")})
     }
-    static moveUp(){
+    moveUp(){
         this.setState({gridModelState:gridController.move(this.state.gridModelState,"up")})
     }
-    static moveDown(){
+    moveDown(){
         this.setState({gridModelState:gridController.move(this.state.gridModelState,"down")})
     }
     render(){
         return (
-                <View style={styles.container}>
+            <GestureRecognizer
+            style={styles.container}
+            onSwipeLeft={()=>this.moveLeft()}
+            onSwipeRight={()=>this.moveRight()}
+            onSwipeUp={()=>this.moveUp()}
+            onSwipeDown={()=>this.moveDown()}
+            
+            >
+                <View style={styles.grid}>
                     {this.state.gridModelState.board.map(
                         (line,i)=>{
                             return (
@@ -47,12 +55,19 @@ export default class Grid extends React.Component{
                     )
                     }
                 </View>
+            </GestureRecognizer>
         )
     }
 }
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
+        backgroundColor: '#DDDDDD',
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+    grid: {
       backgroundColor: '#AAAAAA',
       width:width,
       height:width,

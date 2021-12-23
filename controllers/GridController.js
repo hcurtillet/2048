@@ -1,5 +1,5 @@
 
-//import GridModel from "../models/Gridmodel";
+import GridModel from "../models/Gridmodel";
 // class GridModel{
 //     constructor(size){
 //         this.board =[];
@@ -18,34 +18,53 @@ class GridController{
 
     slideLine(line, gridSize){
         var merged = false;
-        for(var i = 0; i < gridSize-1; i++){
-            if(line[i] != 0){
-                if(line[i+1] == 0){ // we move the block without merging anything
-                    line[i+1] = line[i];
-                    line[i] = 0;
+        var nbVal
+        for(var i =0; i < gridSize; i++){
+            nbVal += line[i];
+        }
+        if(nbVal == 0) return line;
+        var curr = 0;
+        var next = 1;
+        while(curr < gridSize){
+            if(line[curr] == 0){ //let's find the next non null value
+                next = curr+1;
+                while(line[next] == 0 && next < gridSize){
+                    next ++;
                 }
-                else if(line[i] == line[i+1]){ // we'll check if we can merge something
-                    if(merged == false){ // we'll merge because we did not do it yet
-                        line[i+1]++; // because we are use power of 2
-                        line[i] = 0;
-                        for(var j = i; j > 0; j--){
-                            line[j] = line[j-1];
-                        }
-                        line[0] = 0;
-                        merged = true;
+                if(next != gridSize){
+                    line[curr] = line[next];
+                    line[next] = 0;
+                    next = curr +1;
+                }
+                else{
+                    break;
+                }
+                
+            }
+            else{
+                next = curr+1;
+                while(line[next] == 0 && next < gridSize){
+                    next ++;
+                }
+                if(next != gridSize){
+                    if(line[curr] == line[next]){ // we merge
+                        line[curr] ++;
+                        line[next] = 0;
+                        curr ++;
                     }
-                    else{ // we did yet a merge so we do nothing and we just pass
-                        merged = false;
+                    else{ // we do not merge
+                        curr++;
                     }
                 }
-                else if(line[i] != line[i+1]){ // we can not merge so we initialize again the merge bool
-                    merged = false;
+                else{
+                    break;
                 }
             }
         }
         return line;
     }
     slide(grid){
+        console.log(grid);
         for(var line of grid.board){
             line = this.slideLine(line, grid.size);
         }
@@ -70,33 +89,33 @@ class GridController{
         return result;
     }
     move(grid, direction){
+        var result;
         if(direction == "right"){
             console.log("move right");
-            return this.slide(grid);
+            result = this.mirror(grid);
+            result = this.slide(result);
+            result = this.mirror(result);
+
         }
         if(direction=="left"){
-            console.log("move left");
-            var result = this.mirror(grid);
-            result = this.slide(result);
-            result = this.mirror(result);
-            return result;
-        }
-        if(direction == "down"){
-            var result = this.transpose(grid);
-            console.log(result.board);
-            result = this.slide(result);
-            console.log(result.board);
-            result = this.transpose(result);
-            return result;
+            console.log("move left");            
+            result= this.slide(grid);
+            
         }
         if(direction == "up"){
-            var result = this.transpose(grid);
+            result = this.transpose(grid);
+            result = this.slide(result);
+            result = this.transpose(result);
+        }
+        if(direction == "down"){
+             result = this.transpose(grid);
             result = this.mirror(result);
             result = this.slide(result);
             result = this.mirror(result);
             result = this.transpose(result);
-            return result;
         }
+        result = this.add(result);
+        return result;
     }
     add(grid){
         var freelist=[];
