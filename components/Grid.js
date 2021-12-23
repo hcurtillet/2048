@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
 import { Dimensions } from "react-native";
 import GridModel from '../models/Gridmodel';
 import { FlatList } from 'react-native';
@@ -23,6 +23,8 @@ export default class Grid extends React.Component{
         };
         
     }
+
+    
     moveRight(){
         this.setState({gridModelState:gridController.move(this.state.gridModelState,"right")})
     }
@@ -35,6 +37,15 @@ export default class Grid extends React.Component{
     moveDown(){
         this.setState({gridModelState:gridController.move(this.state.gridModelState,"down")})
     }
+
+    minus(){
+        var newSize = this.state.gridModelState.size-1;
+        this.setState({gridModelState:gridController.add(new GridModel(newSize))})
+    }
+    plus(){
+        var newSize = this.state.gridModelState.size-1;
+        this.setState({gridModelState:gridController.add(new GridModel(newSize))})
+    }
     render(){
         return (
             <GestureRecognizer
@@ -45,6 +56,17 @@ export default class Grid extends React.Component{
             onSwipeDown={()=>this.moveDown()}
             
             >
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={styles.button} onPress={this.minus()}>
+                    <Text style={styles.textSign}>{"-"}</Text>
+                    </TouchableOpacity>
+                    
+                    <Text style={styles.textGridSize}>{this.state.gridModelState.size}</Text>
+                    <TouchableOpacity style={styles.button} onPress={this.plus}>
+                    <Text style={styles.textSign}>{"+"}</Text>
+                    </TouchableOpacity>
+                    
+                </View>
                 <View style={styles.grid}>
                     {this.state.gridModelState.board.map(
                         (line,i)=>{
@@ -55,6 +77,7 @@ export default class Grid extends React.Component{
                     )
                     }
                 </View>
+                <Text style={styles.text}>By Hugo Curtillet</Text>
             </GestureRecognizer>
         )
     }
@@ -71,6 +94,39 @@ const styles = StyleSheet.create({
       backgroundColor: '#AAAAAA',
       width:width,
       height:width,
+    },
+    text:{
+        fontSize:12
+    },
+    buttonContainer:{
+        flex:1,
+        justifyContent:"center",
+        backgroundColor:"red",
+        flexDirection:"row",
+        maxHeight:50,
+        marginBottom:50
+    },
+    buttonStyle:{
+        justifyContent:"center",
+        alignContent:"center",
+        fontSize:30,
+        width:50,
+        height:50
+    },
+    textGridSize:{
+        fontSize:50,
+        marginHorizontal:30
+    },
+    textSign:{
+        fontSize:100
+    },
+    button:{
+        width:50,
+        height:50,
+        fontSize:100,
+        alignItems:"center",
+        justifyContent:"center",
+        alignContent:"center"
     }
   });
   

@@ -11,11 +11,21 @@ var lighter = [171,219,227]
 
 
 function colorRender(val, size){
+    if(val == 0){
+        return null;
+    }
     var red = Math.floor(darker[0] + val*(lighter[0]-darker[0])/(size*size));
     var green = Math.floor(darker[1] + val*(lighter[1]-darker[1])/(size*size));
     var blue = Math.floor(darker[2] + val*(lighter[2]-darker[2])/(size*size));
     var result = "#" + red.toString(16) + green.toString(16) + blue.toString(16); 
     return result;
+}
+
+function itemRender(val){
+    if(val == 0){
+        return null;
+    }
+    return Math.pow(2,val);
 }
 export default class Line extends React.Component{
     render(){
@@ -37,7 +47,7 @@ export default class Line extends React.Component{
                             justifyContent:'center',
                             height:width/size-2,
                             width:width/size-2}}>
-                                <Text>{item}</Text>
+                                <Text style={{fontSize:width/(2*size)}}>{itemRender(item)}</Text>
                             </View>
                         }
                     ></FlatList>
@@ -54,6 +64,6 @@ const styles = StyleSheet.create(
             backgroundColor:'red',
             alignItems:'center',
             justifyContent:'center'
-        }
+        },
     }
 );

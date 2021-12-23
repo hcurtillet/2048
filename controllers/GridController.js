@@ -16,6 +16,44 @@ import GridModel from "../models/Gridmodel";
 
 class GridController{
 
+    isSlidePossible(line, gridSize){
+        var curr = 0;
+        var next = 1;
+        while(curr < gridSize){
+            next = curr+1;
+            if(line[curr] == 0){ //let's find the next non null value
+                while(line[next] == 0 && next < gridSize){
+                    next ++;
+                }
+                if(next != gridSize){
+                    return true;
+                }
+                else{
+                    break;
+                }
+                
+            }
+            else{
+                while(line[next] == 0 && next < gridSize){
+                    next ++;
+                }
+                if(next != gridSize){
+                    if(line[curr] == line[next]){ // we merge
+                        return true;
+                    }
+                    else{ // we do not merge
+                        curr++;
+                    }
+                }
+                else{
+                    break;
+                }
+            }
+        }
+        console.log("No move");
+        return false;
+    }
+
     slideLine(line, gridSize){
         var merged = false;
         var nbVal
@@ -26,8 +64,8 @@ class GridController{
         var curr = 0;
         var next = 1;
         while(curr < gridSize){
+            next = curr+1;
             if(line[curr] == 0){ //let's find the next non null value
-                next = curr+1;
                 while(line[next] == 0 && next < gridSize){
                     next ++;
                 }
@@ -42,7 +80,6 @@ class GridController{
                 
             }
             else{
-                next = curr+1;
                 while(line[next] == 0 && next < gridSize){
                     next ++;
                 }
@@ -65,8 +102,18 @@ class GridController{
     }
     slide(grid){
         console.log(grid);
+        var possible = false;
         for(var line of grid.board){
-            line = this.slideLine(line, grid.size);
+            if(this.isSlidePossible(line, grid.size)){
+                possible = true;
+                break;
+            }
+        }
+        if(possible){
+            for(var line of grid.board){
+                line = this.slideLine(line, grid.size);
+            }
+            grid = this.add(grid);
         }
         return grid;
     }
@@ -114,7 +161,6 @@ class GridController{
             result = this.mirror(result);
             result = this.transpose(result);
         }
-        result = this.add(result);
         return result;
     }
     add(grid){
