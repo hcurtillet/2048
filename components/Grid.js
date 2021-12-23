@@ -12,20 +12,28 @@ import GridController from '../controllers/GridController';
 export var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
 
-export var gridModel = new GridModel(4);
 var gridController = new GridController();
-gridModel.board[0][1]=8;
-gridModel.board[1][2] = 4;
+
 
 export default class Grid extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            gridModelState:gridModel 
+            gridModelState:gridController.add(new GridModel(4))
         };
+        
     }
     static moveRight(){
-        this.setState({gridModel:gridController.move(this.state.gridModelState,"right")})
+        this.setState({gridModelState:gridController.move(this.state.gridModelState,"right")})
+    }
+    static moveLeft(){
+        this.setState({gridModelState:gridController.move(this.state.gridModelState,"left")})
+    }
+    static moveUp(){
+        this.setState({gridModelState:gridController.move(this.state.gridModelState,"up")})
+    }
+    static moveDown(){
+        this.setState({gridModelState:gridController.move(this.state.gridModelState,"down")})
     }
     render(){
         return (
@@ -48,15 +56,6 @@ const styles = StyleSheet.create({
       backgroundColor: '#AAAAAA',
       width:width,
       height:width,
-    },  
-    case:{
-        width:width/gridModel.size,
-        height:width/gridModel.size,
-        borderColor:"black",
-        borderRadius:10,
-        backgroundColor:'red',
-        alignItems:'center',
-        justifyContent:'center'
     }
   });
   

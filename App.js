@@ -9,10 +9,10 @@ export default class App extends react.Component {
     return (
       <GestureRecognizer
       style={styles.container}
-      onSwipeLeft={()=>console.log("Move left")}
+      onSwipeLeft={()=>Grid.moveLeft()}
       onSwipeRight={()=>Grid.moveRight()}
-      onSwipeUp={()=>console.log("Move up")}
-      onSwipeDown={()=>console.log("Move down")}
+      onSwipeUp={()=>Grid.moveUp()}
+      onSwipeDown={()=>Grid.moveDown()}
       
       >
 
